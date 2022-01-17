@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="ru"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Страница пользователя</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style>
+    .navbar {
+        justify-content: flex-start;
+    }
+
+    .navbar-brand {
+        margin-right: 0.4rem;
+    }
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-link:hover {
+        font-weight: 400;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .btn-primary.focus, .btn-primary:focus {
+        box-shadow: none;
+    }
+
+    .sidebar {
+        padding: 8px 0;
+    }
+</style>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+    <div class="navbar-brand">
+        <b><span th:text="${user.username}"></span></b>
+    </div>
+    <div class="navbar-brand">
+        <span>with roles:</span>
+    </div>
+    <div class="navbar-brand" th:each="role : ${user.getRoles()}">
+        <span th:text="${role.getName().substring(5)}"></span>
+    </div>
+    <div class="collapse navbar-collapse"></div>
+
+    <a class="btn align-middle btn-outline-secondary navbar-text" th:href="@{/logout}">Logout</a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 bg-white sidebar pt-4">
+            <form sec:authorize="hasRole('ROLE_ADMIN')" action="/admin" method="GET">
+                <button class="btn btn-link btn-block" style="text-align: left" type="submit">Admin</button>
+            </form>
+            <button class="btn btn-primary btn-block" style="text-align: left" type="button">User</button>
+        </div>
+        <div class="col-sm-10 bg-light pt-4">
+            <h1>Страница пользователя</h1>
+
+                <nav style="background: #EAECED" class="navbar navbar-expand-lg navbar-light">
+                    <h4>Личные данные</h4>
+                </nav>
+                <div class="container-fluid pt-2">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Логин</th>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Возраст</th>
+                            <th>Роли</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row" th:text="${user.getId()}"></th>
+                            <td th:text="${user.getUsername()}"></td>
+                            <td th:text="${user.getFirstName()}"></td>
+                            <td th:text="${user.getLastName()}"></td>
+                            <td th:text="${user.getAge()}"></td>
+                            <td>
+                            <span th:each="role : ${user.getRoles()}" th:text="${role.getName().substring(5)} + ' '"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
