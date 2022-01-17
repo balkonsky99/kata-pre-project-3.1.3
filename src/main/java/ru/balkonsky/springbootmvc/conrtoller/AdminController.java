@@ -34,41 +34,4 @@ public class AdminController {
         model.addAttribute("user", user);
         return "/index";
     }
-
-    @PostMapping()
-    public String create (@ModelAttribute("user") User user,
-                          @RequestParam(required = false, value = "listRoleNames") List<String> listRoleNames) {
-        Set<Role> roles = new HashSet<>();
-        if (listRoleNames != null) {
-            roles = roleService.getSetOfListRoles(listRoleNames);
-        }else {
-            roles.add(roleService.getRoleByRoleName("ROLE_USER"));
-        }
-        user.setRoles(roles);
-        userService.saveUser(user);
-
-        return "redirect:/admin";
-    }
-
-    @PatchMapping("/user_{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") int id,
-                         @RequestParam(required = false, value = "listRoleNames") List<String> listRoleNames) {
-
-        Set<Role> roles = new HashSet<>();
-        if (listRoleNames != null) {
-            roles = roleService.getSetOfListRoles(listRoleNames);
-        }else {
-            roles.add(roleService.getRoleByRoleName("ROLE_USER"));
-        }
-        user.setRoles(roles);
-        userService.updateUser(user, id);
-
-        return "redirect:/admin";
-    }
-
-    @DeleteMapping("/user_{id}")
-    public String delete(@PathVariable("id") int id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
 }
