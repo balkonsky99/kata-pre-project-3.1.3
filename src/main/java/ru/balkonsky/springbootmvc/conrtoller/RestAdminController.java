@@ -1,6 +1,8 @@
 package ru.balkonsky.springbootmvc.conrtoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.balkonsky.springbootmvc.model.User;
 import ru.balkonsky.springbootmvc.service.UserService;
@@ -19,25 +21,27 @@ public class RestAdminController {
     }
 
     @GetMapping("")
-    public List<User> showAllUsers () {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> showAllUsers () {
+
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public User showUser (@PathVariable int id) {
-        return userService.showUserById(id);
+    public ResponseEntity<User> showUser (@PathVariable int id) {
+
+        return new ResponseEntity<>(userService.showUserById(id), HttpStatus.OK);
     }
 
     @PostMapping("")
-    public User createUser (@RequestBody User user) {
+    public ResponseEntity<User> createUser (@RequestBody User user) {
         userService.saveUser(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PatchMapping ("{id}")
-    public User editUser (@PathVariable int id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> editUser (@PathVariable int id, @RequestBody User updatedUser) {
         userService.updateUser(updatedUser, id);
-        return updatedUser;
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
